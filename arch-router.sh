@@ -1,9 +1,13 @@
 #!/bin/bash
 
+set -e
+
 if [ "$#" -ne 1 ]; then
     echo "Need two arguments. The first is the external interface, the second is the interface that will provide networking."
     echo "For example: ./arch-router wlp3s0 enp1s0"
     echo "Will pass connection from the wifi interface to the wired."
+
+    exit 1
 fi
 
 echo "Installing needed dependencies"
@@ -17,6 +21,7 @@ IP='static'
 Address=('10.0.0.1/24')
 EOF
 
+echo "Enabling and starting $1 interface"
 sudo netctl enable $2-profile
 sudo netctl start $2-profile
 
@@ -27,6 +32,7 @@ domain=foo.bar
 dhcp-range=10.0.0.2,10.0.0.255,255.255.255.0,1h
 EOF
 
+echo "Starting iptables"
 sudo systemctl start iptables
 
 sudo tee -a /etc/iptables/iptables.rule <<EOF
@@ -48,6 +54,7 @@ COMMIT
 COMMIT
 EOF
 
+echo "Restarting and enabling iptables. Same with dnsmasq"
 sudo systemctl restart iptables
 sudo systemctl enable iptables
 sudo systemctl start dnsmasq
