@@ -2,7 +2,7 @@
 
 set -e
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
     echo "Need two arguments. The first is the external interface, the second is the interface that will provide networking."
     echo "For example: ./arch-router wlp3s0 enp1s0"
     echo "Will pass connection from the wifi interface to the wired."
