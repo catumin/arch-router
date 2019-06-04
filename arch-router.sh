@@ -11,7 +11,7 @@ if [ "$#" -ne 2 ]; then
 fi
 
 echo "Installing needed dependencies"
-sudo systemctl -S netctl dnsmasq iptables
+sudo pacman -S netctl dnsmasq iptables
 
 sudo tee /etc/netctl/$2-profile <<EOF
 Description='Private Interface'
